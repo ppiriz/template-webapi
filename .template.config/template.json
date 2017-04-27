@@ -1,0 +1,10 @@
+{
+    "author": "rmcdonnell@eshopworld.com",
+    "classifications": [ "Web" ],
+    "name": "ASP.NET core web api template",
+    "identity": "esw.aspnetcore-webapi",       
+    "shortName": "webapi",                 
+    "tags": { "language": "C#" },
+    "sourceName": "new-project",
+    "preferNameDirectory" : "true"
+}
