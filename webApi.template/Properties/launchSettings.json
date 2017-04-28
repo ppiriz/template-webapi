@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "new_project": {
+    "webApi.template": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",

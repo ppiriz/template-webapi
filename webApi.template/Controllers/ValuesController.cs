@@ -6,10 +6,10 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Web.Http.Description;
-using new_project.Models;
+using webApi.template.Models;
 using System.Web.Http.Description;
 
-namespace new_project.Controllers
+namespace webApi.template.Controllers
 {
     // review http://www.ietf.org/assignments/http-status-codes/http-status-codes.xml for all status codes
 
@@ -127,7 +127,7 @@ namespace new_project.Controllers
     {
         public BasicDependency()
         {
-            ApplicationName = "new-project";
+            ApplicationName = "webApi.template";
         }
 
         public string ApplicationName { get; }

@@ -1,14 +1,12 @@
 ﻿using System;
 using DevOpsFlex.Tests.Core;
-using FluentAssertions.Collections;
-using new_project.Controllers;
+using webApi.template.Controllers;
 using Xunit;
 using FluentAssertions;
-using FluentAssertions.Common;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
-namespace new_project.tests
+namespace webApi.template.tests
 {
     public class ValuesControllerTests
     {

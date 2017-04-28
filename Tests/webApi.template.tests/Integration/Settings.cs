@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace new_project.tests.Integration
+namespace webApi.template.tests.Integration
 {
     class Settings
     {

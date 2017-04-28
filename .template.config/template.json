@@ -3,8 +3,44 @@
     "classifications": [ "Web" ],
     "name": "ASP.NET core web api template",
     "identity": "esw.aspnetcore-webapi",       
-    "shortName": "webapi",                 
+    "shortName": "esw-webapi",                 
     "tags": { "language": "C#" },
-    "sourceName": "new-project",
-    "preferNameDirectory" : "true"
+    "sourceName": "webApi.template",
+    "preferNameDirectory" : "true",
+    "sources": [{
+        "source": "./",
+        "include": ["**/*"],
+        "exclude": [ 
+            "**/[Bb]in/**",
+            "**/[Oo]bj/**",
+            "**/[Pp]ackages/**",
+            "**/.template.config/**",
+            "**/*.vs/**",            
+            "**/*.git/**",
+            "**/*.user"
+        ],
+        "modifiers": [
+            {
+                "condition": "(Framework==\"core\")",
+                "include": ["TemplateName.Web/app.config"]
+            },
+            {
+                "condition": "(Framework==\"full\")",
+                "include": ["TemplateName.Web/web.config"]
+            }
+        ]
+    }]
+
+    /*"symbols":{
+        "copyrightName": {
+            "type": "parameter",
+            "defaultValue": "John Smith",
+            "replaces":"Sayed Ibrahim Hashimi"
+        },
+        "title": {
+            "type": "parameter",
+            "defaultValue": "Hello Web",
+            "replaces":"Sayed Web"
+        }
+    }*/
 }

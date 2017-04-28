@@ -5,11 +5,9 @@ using DevOpsFlex.Tests.Core;
 using Xunit;
 using FluentAssertions;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
-namespace new_project.tests.Integration
+namespace webApi.template.tests.Integration
 {
-    // todo use Microsoft.AspNetCore.TestHost
     public class SwaggerTests
     {
         private const string TargetUrl = "/swagger/v1/swagger.json";

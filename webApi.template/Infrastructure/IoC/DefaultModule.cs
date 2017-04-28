@@ -1,9 +1,9 @@
 ﻿using Autofac;
 using Autofac.Core;
 using Autofac.Core.Registration;
-using new_project.Controllers;
+using webApi.template.Controllers;
 
-namespace new_project.Infrastructure.IoC
+namespace webApi.template.Infrastructure.IoC
 {
     public class DefaultModule : Module
     {

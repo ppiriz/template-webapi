@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
-namespace new_project
+namespace webApi.template
 {
     public class Program
     {

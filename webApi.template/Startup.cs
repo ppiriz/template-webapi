@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace new_project
+namespace webApi.template
 {
     public class Startup
     {
@@ -77,7 +77,7 @@ namespace new_project
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(c =>
             {
-                var xmlDocFile = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory,"new-project.xml");
+                var xmlDocFile = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "webApi.template.xml");
                 if (System.IO.File.Exists(xmlDocFile))
                     c.IncludeXmlComments(xmlDocFile);
                 else
