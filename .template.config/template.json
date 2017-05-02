@@ -1,7 +1,7 @@
 {
     "author": "rmcdonnell@eshopworld.com",
     "classifications": [ "Web" ],
-    "name": "ASP.NET core web api template",
+    "name": "ASP.NET core web api template v0.2",
     "identity": "esw.aspnetcore-webapi",       
     "shortName": "esw-webapi",                 
     "tags": { "language": "C#" },
