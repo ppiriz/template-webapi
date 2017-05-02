@@ -71,3 +71,7 @@ This will only work once you've built in VS, as VS needs to package restore
              + -- MyProject.tests
                   |
                   | -- MyProject.tests.csproj
+
+## References
+<http://rehansaeed.com/custom-project-templates-using-dotnet-new/>
+<https://blogs.msdn.microsoft.com/dotnet/2017/04/02/how-to-create-your-own-templates-for-dotnet-new/>
