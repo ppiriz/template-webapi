@@ -41,17 +41,21 @@ Follow the below commands to create a new project from this templae. Use the [St
 -----
 Either
 
+* Open project in VS, build
+* Run unit / integration tests
+* Run project, confirm swagger opens + API's are listed for project
+
+
+OR
+This will only work once you've built in VS, as VS needs to package restore
+
 * `cd yourProjectName`
 * `dotnet restore`
 * `dotnet build`
 * `dotnet test .\Tests\yourProjectName.tests\yourProjectName.tests.csproj`
 * `dotnet run .\yourProjectName\yourProjectName.csproj`
 
-OR
 
-* Open project in VS, build
-* Run unit / integration tests
-* Run project, confirm swagger opens + API's are listed for project
 
 ## Structure
 
