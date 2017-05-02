@@ -3,7 +3,7 @@
 Overview
 -------
 
-This template will create a standard asp.net core web API project with a corrosponding tests project.
+This template will create a standard asp.net core web API project with a corresponding tests project.
 
 * Autofac & Swashbuckle/swagger has been configured for your application project.
 
