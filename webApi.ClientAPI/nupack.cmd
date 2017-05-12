@@ -1,0 +1,1 @@
+@powershell .\nupack.ps1 
