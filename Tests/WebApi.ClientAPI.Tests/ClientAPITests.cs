@@ -16,7 +16,7 @@ namespace webApi.template.tests.Integration
 
         public ClientAPITests()
         {
-            _apiv1 = new WebApitemplate(new Uri(Settings.Instance.SiteURL));
+            _apiv1 = new WebApitemplate(new Uri("http://localhost:63300"));
         }
 
         [Fact, IsIntegration]

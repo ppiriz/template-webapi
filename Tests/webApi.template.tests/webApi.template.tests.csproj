@@ -288,7 +288,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Integration\ClientAPITests.cs" />
     <Compile Include="Integration\Settings.cs" />
     <Compile Include="Integration\SwaggerTests.cs" />
     <Compile Include="Unit\ValuesControllerTests.cs" />
@@ -305,10 +304,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\webApi.ClientAPI\webApi.ClientAPI.csproj">
-      <Project>{a6c054a2-4676-43b9-b526-4915a15dd5f1}</Project>
-      <Name>webApi.ClientAPI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\webApi.template\webApi.template.csproj">
       <Project>{cf439484-d527-4da6-9b18-4e92993cf22d}</Project>
       <Name>webApi.template</Name>
