@@ -18,6 +18,6 @@ namespace webApi.template.Models
         /// <summary>
         /// Customers date of birth
         /// </summary>
-        public DateTime DOB { get; set; }
+        public DateTime DoB { get; set; }
     }
 }

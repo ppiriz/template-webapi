@@ -1,6 +1,4 @@
 ﻿using Autofac;
-using Autofac.Core;
-using Autofac.Core.Registration;
 using webApi.template.Controllers;
 
 namespace webApi.template.Infrastructure.IoC

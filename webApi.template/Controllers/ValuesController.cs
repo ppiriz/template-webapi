@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Web.Http.Description;
 using webApi.template.Models;
-using System.Web.Http.Description;
 
 namespace webApi.template.Controllers
 {
@@ -24,7 +20,10 @@ namespace webApi.template.Controllers
         public ValuesController(IBasicDependency basicDependency)
         {
             _basicDependency = basicDependency;
+#if DEBUG
+            // Don't perform these checks on Release code, as these are only development time errors
             if (basicDependency == null) throw new ArgumentNullException(nameof(basicDependency));
+#endif
         }
 
 

@@ -1,7 +1,7 @@
 {
     "author": "rmcdonnell@eshopworld.com",
-    "classifications": [ "Web" ],
-    "name": "ASP.NET core web api template v0.2",
+    "classifications": [ "WebAPI" ],
+    "name": "eShopWorld ASP.NET core web api template",
     "identity": "esw.aspnetcore-webapi",       
     "shortName": "esw-webapi",                 
     "tags": { "language": "C#" },
@@ -30,17 +30,4 @@
             }
         ]
     }]
-
-    /*"symbols":{
-        "copyrightName": {
-            "type": "parameter",
-            "defaultValue": "John Smith",
-            "replaces":"Sayed Ibrahim Hashimi"
-        },
-        "title": {
-            "type": "parameter",
-            "defaultValue": "Hello Web",
-            "replaces":"Sayed Web"
-        }
-    }*/
 }

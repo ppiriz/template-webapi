@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
@@ -15,7 +12,11 @@ namespace webApi.template
 {
     public class Startup
     {
-        private static ILogger logger;
+        private static ILogger _logger;
+
+        public IConfigurationRoot Configuration { get; }
+
+        public IContainer ApplicationContainer { get; private set; }
 
         public Startup(IHostingEnvironment env)
         {
@@ -29,10 +30,6 @@ namespace webApi.template
 
         }
 
-
-        public IConfigurationRoot Configuration { get; }
-        public IContainer ApplicationContainer { get; private set; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -44,14 +41,12 @@ namespace webApi.template
             return new AutofacServiceProvider(ApplicationContainer);
         }
 
-
-        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            logger = loggerFactory.CreateLogger(typeof(Startup));
+            _logger = loggerFactory.CreateLogger(typeof(Startup));
 
 #if DEBUG
             app.UseDeveloperExceptionPage();
