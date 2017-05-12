@@ -37,6 +37,7 @@ namespace webApi.template
             BuildSwaggerService(services);
 
             ApplicationContainer = BuildAutofac(services);
+            services.AddMvc(options => options.OutputFormatters.RemoveType<Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter>());
 
             return new AutofacServiceProvider(ApplicationContainer);
         }
@@ -79,6 +80,7 @@ namespace webApi.template
                     // logger.LogDebug($"Swagger expected a xml doc file  at '{xmlDocFile}' which was not found.");
 
                 c.DescribeAllEnumsAsStrings(); // if this is not enabled, enum values are treated as int's. probably not what you want
+                c.SingleApiVersion(new Swashbuckle.Swagger.Model.Info() {Title = "webApi.template", Version = "v1"});
             });
         }
 

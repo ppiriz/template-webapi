@@ -50,6 +50,7 @@ namespace webApi.template.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound, Type = typeof(void))]
         public IActionResult Get(int id)
         {
+            //return "test";
             if (id < ExistingRecordsRange)
             {
                 return Ok($"{_basicDependency.ApplicationName} - value{id}");
@@ -62,6 +63,8 @@ namespace webApi.template.Controllers
         /// adds a record type to the system
         /// </summary>
         /// <param name="value">new record to add</param>
+        /// <response code="201">resource created</response>
+        /// <response code="400">Request is not valid</response>
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Created,Type=typeof(Uri))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(void))]
