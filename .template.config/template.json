@@ -5,7 +5,7 @@
     "identity": "esw.aspnetcore-webapi",       
     "shortName": "esw-webapi",                 
     "tags": { "language": "C#" },
-    "sourceName": "webApi.template",
+    "sourceName": "WebApi.template",
     "preferNameDirectory" : "true",
     "sources": [{
         "source": "./",

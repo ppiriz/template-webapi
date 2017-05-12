@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace webApi.template.Models
+namespace WebApi.template.Models
 {
     /// <summary>
     /// Represents a customer

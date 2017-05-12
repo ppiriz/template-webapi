@@ -1,8 +1,9 @@
 ﻿using Autofac;
-using webApi.template.Controllers;
 
-namespace webApi.template.Infrastructure.IoC
+namespace WebApi.template.Infrastructure.IoC
 {
+    using Controllers;
+
     public class DefaultModule : Module
     {
         protected override void Load(ContainerBuilder builder)

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using System.Web.Http.Description;
-using webApi.template.Models;
 
-namespace webApi.template.Controllers
+namespace WebApi.template.Controllers
 {
+    using Models;
+
     // review http://www.ietf.org/assignments/http-status-codes/http-status-codes.xml for all status codes
 
     [Route("api/[controller]")]

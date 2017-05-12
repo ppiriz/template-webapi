@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Microsoft.AspNetCore.Hosting;
 
-namespace webApi.template
+namespace WebApi.template
 {
     public class Program
     {
