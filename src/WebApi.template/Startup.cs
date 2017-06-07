@@ -16,8 +16,6 @@ namespace WebApi.template
 
         public IConfigurationRoot Configuration { get; }
 
-        public IContainer ApplicationContainer { get; private set; }
-
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -36,10 +34,9 @@ namespace WebApi.template
             services.AddMvc();
             BuildSwaggerService(services);
 
-            ApplicationContainer = BuildAutofac(services);
             services.AddMvc(options => options.OutputFormatters.RemoveType<Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter>());
 
-            return new AutofacServiceProvider(ApplicationContainer);
+            return new AutofacServiceProvider(BuildAutofac(services));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
