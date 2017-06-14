@@ -2,23 +2,31 @@
 using System.Collections.Generic;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.template.Models;
 using System.Web.Http.Description;
 
 namespace WebApi.template.Controllers
 {
-    using Models;
 
-    // review http://www.ietf.org/assignments/http-status-codes/http-status-codes.xml for all status codes
-
+    /// <summary>
+    /// Demo values controller, based on the values controller in the default VS template.
+    /// </summary>
+    /// <remarks>
+    /// review http://www.ietf.org/assignments/http-status-codes/http-status-codes.xml for all status codes
+    /// </remarks>
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
         private const int ExistingRecordsRange = 100;
         private const int RestrictedRecordsRange = 10;
 
-        private readonly IBasicDependency _basicDependency;
+        private readonly BasicDependency _basicDependency;
 
-        public ValuesController(IBasicDependency basicDependency)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="basicDependency"></param>
+        public ValuesController(BasicDependency basicDependency)
         {
             _basicDependency = basicDependency;
 #if DEBUG
@@ -121,18 +129,13 @@ namespace WebApi.template.Controllers
         }
     }
 
-    public interface IBasicDependency
-    {
-        string ApplicationName { get; }
-    }
-
-    internal class BasicDependency : IBasicDependency
+    public class BasicDependency
     {
         public BasicDependency()
         {
             ApplicationName = "webApi.template";
         }
 
-        public string ApplicationName { get; }
+        public virtual string ApplicationName { get; }
     }
 }

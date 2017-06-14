@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -6,92 +7,83 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace WebApi.template
 {
+    /// <summary>
+    /// ASP.NET Core main bootstrapping entry point.
+    /// </summary>
     public class Startup
     {
-        private static ILogger _logger;
-
+        /// <summary>
+        /// Gets the Configuration root for this ASP.NET Core application.
+        /// </summary>
         public IConfigurationRoot Configuration { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Startup"/> class.
+        /// </summary>
+        /// <param name="env">Provides information about the web hosting environment an application is running in.</param>
         public Startup(IHostingEnvironment env)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+            var builder = new ConfigurationBuilder().SetBasePath(env.ContentRootPath)
+                                                    .AddJsonFile("appsettings.json")
+                                                    .AddJsonFile($"appsettings.{env.EnvironmentName}.json")
+                                                    .AddEnvironmentVariables();
 
             Configuration = builder.Build();
-
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services">The collection of service descriptors.</param>
+        /// <returns>The <see cref="Autofac"/> service object that provides Dependency Injection support to other objects.</returns>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            BuildSwaggerService(services);
-
             services.AddMvc(options => options.OutputFormatters.RemoveType<Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter>());
 
-            return new AutofacServiceProvider(BuildAutofac(services));
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-            _logger = loggerFactory.CreateLogger(typeof(Startup));
-
-#if DEBUG
-            app.UseDeveloperExceptionPage();
-#endif 
-            app.UseMvcWithDefaultRoute();
-            BuildSwagger(app);
-        }
-
-        private void BuildSwagger(IApplicationBuilder app)
-        {
-            // https://github.com/domaindrivendev/Swashbuckle
-
-            if (app == null) throw new ArgumentNullException(nameof(app));
-
-            app.UseSwagger();
-#if DEBUG
-            app.UseSwaggerUi();
-#endif 
-        }
-
-        private static void BuildSwaggerService(IServiceCollection services)
-        {
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(c =>
             {
-                var xmlDocFile = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "webApi.template.xml");
-                if (System.IO.File.Exists(xmlDocFile))
+                var xmlDocFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "webApi.template.xml");
+
+                if (File.Exists(xmlDocFile))
+                {
                     c.IncludeXmlComments(xmlDocFile);
-                else
-                    // logger.LogDebug($"Swagger expected a xml doc file  at '{xmlDocFile}' which was not found.");
+                }
 
                 c.DescribeAllEnumsAsStrings(); // if this is not enabled, enum values are treated as int's. probably not what you want
-                c.SingleApiVersion(new Swashbuckle.Swagger.Model.Info() {Title = "webApi.template", Version = "v1"});
+                c.SingleApiVersion(new Swashbuckle.Swagger.Model.Info { Title = "webApi.template", Version = "v1" });
             });
-        }
-
-        private IContainer BuildAutofac(IServiceCollection services)
-        {
-            // http://docs.autofac.org/en/latest/integration/owin.html
-
-            if (services == null) throw new ArgumentNullException(nameof(services));
 
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyModules(GetType().GetTypeInfo().Assembly); // autoscan the current assembly, find all modules and load them
             builder.Populate(services);
 
-            return builder.Build();
+            return new AutofacServiceProvider(builder.Build());
+        }
+
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure an application's request pipeline.
+        /// </summary>
+        /// <param name="app">Provides the mechanisms to configure an application's request pipeline.</param>
+        /// <param name="env">Provides information about the web hosting environment an application is running in.</param>
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseMvcWithDefaultRoute();
+            app.UseSwagger();
+
+            if (env.IsDevelopment())
+            {
+                app.UseSwaggerUi();
+            }
         }
     }
 }

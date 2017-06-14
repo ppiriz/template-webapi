@@ -8,7 +8,7 @@ namespace WebApi.template.Infrastructure.IoC
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<BasicDependency>().As<IBasicDependency>();
+            builder.RegisterType<BasicDependency>();
         }
     }
 }

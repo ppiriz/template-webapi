@@ -12,11 +12,11 @@ public class ValuesControllerTests
     {
         private const string AppName = "foo";
         private readonly ValuesController _controller;
-        private readonly Mock<IBasicDependency> _basicDependencyMoq;
+        private readonly Mock<BasicDependency> _basicDependencyMoq;
 
         public Get()
         {
-            _basicDependencyMoq = new Mock<IBasicDependency>();
+            _basicDependencyMoq = new Mock<BasicDependency>();
             _basicDependencyMoq.SetupGet(p => p.ApplicationName).Returns(AppName);
 
             _controller = new ValuesController(_basicDependencyMoq.Object);
