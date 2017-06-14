@@ -7,7 +7,6 @@ using System.Web.Http.Description;
 
 namespace WebApi.template.Controllers
 {
-
     /// <summary>
     /// Demo values controller, based on the values controller in the default VS template.
     /// </summary>
@@ -107,7 +106,6 @@ namespace WebApi.template.Controllers
             return NotFound();
         }
 
-
         /// <summary>
         /// removes a record from the system
         /// </summary>
@@ -123,7 +121,6 @@ namespace WebApi.template.Controllers
         {
             if (id < RestrictedRecordsRange) return Forbid();
             if (id < ExistingRecordsRange) return NoContent();
-            
 
             return NotFound();
         }

@@ -3,6 +3,8 @@ using System.IO;
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using DevOpsFlex.Telemetry;
+using DevOpsFlex.Telemetry.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +17,9 @@ namespace WebApi.template
     /// </summary>
     public class Startup
     {
+        internal readonly BigBrother Bb;
+        internal readonly TelemetrySettings TelemetrySettings = new TelemetrySettings();
+
         /// <summary>
         /// Gets the Configuration root for this ASP.NET Core application.
         /// </summary>
@@ -27,11 +32,19 @@ namespace WebApi.template
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder().SetBasePath(env.ContentRootPath)
-                                                    .AddJsonFile("appsettings.json")
-                                                    .AddJsonFile($"appsettings.{env.EnvironmentName}.json")
-                                                    .AddEnvironmentVariables();
+                                                    .AddJsonFile("appsettings.json");
+
+            if (!env.IsDevelopment())
+            {
+                builder.AddJsonFile($"appsettings.{env.EnvironmentName}.json");
+            }
+
+            builder.AddEnvironmentVariables();
 
             Configuration = builder.Build();
+
+            Configuration.GetSection("Telemetry").Bind(TelemetrySettings);
+            Bb = new BigBrother(TelemetrySettings.InstrumentationKey, TelemetrySettings.InternalKey);
         }
 
         /// <summary>
@@ -41,28 +54,39 @@ namespace WebApi.template
         /// <returns>The <see cref="Autofac"/> service object that provides Dependency Injection support to other objects.</returns>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-            services.AddMvc(options => options.OutputFormatters.RemoveType<Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter>());
-
-            services.AddSwaggerGen();
-            services.ConfigureSwaggerGen(c =>
+            try
             {
-                var xmlDocFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "webApi.template.xml");
+                services.AddMvc();
+                services.AddMvc(options => options.OutputFormatters.RemoveType<Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter>());
 
-                if (File.Exists(xmlDocFile))
+                services.AddApplicationInsightsTelemetry(TelemetrySettings.InstrumentationKey);
+
+                services.AddSwaggerGen();
+                services.ConfigureSwaggerGen(c =>
                 {
-                    c.IncludeXmlComments(xmlDocFile);
-                }
+                    var xmlDocFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "webApi.template.xml");
 
-                c.DescribeAllEnumsAsStrings(); // if this is not enabled, enum values are treated as int's. probably not what you want
-                c.SingleApiVersion(new Swashbuckle.Swagger.Model.Info { Title = "webApi.template", Version = "v1" });
-            });
+                    if (File.Exists(xmlDocFile))
+                    {
+                        c.IncludeXmlComments(xmlDocFile);
+                    }
 
-            var builder = new ContainerBuilder();
-            builder.RegisterAssemblyModules(GetType().GetTypeInfo().Assembly); // autoscan the current assembly, find all modules and load them
-            builder.Populate(services);
+                    c.DescribeAllEnumsAsStrings(); // if this is not enabled, enum values are treated as int's. probably not what you want
+                    c.SingleApiVersion(new Swashbuckle.Swagger.Model.Info { Title = "webApi.template", Version = "v1" });
+                });
 
-            return new AutofacServiceProvider(builder.Build());
+                var builder = new ContainerBuilder();
+                builder.RegisterAssemblyModules(GetType().GetTypeInfo().Assembly); // autoscan the current assembly, find all modules and load them
+                builder.Populate(services);
+                builder.Register(c => Bb).As<IBigBrother>();
+
+                return new AutofacServiceProvider(builder.Build());
+            }
+            catch (Exception e)
+            {
+                Bb.Publish(e.ToBbEvent());
+                throw;
+            }
         }
 
         /// <summary>
@@ -72,17 +96,27 @@ namespace WebApi.template
         /// <param name="env">Provides information about the web hosting environment an application is running in.</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
+            try
             {
-                app.UseDeveloperExceptionPage();
+                app.UseBigBrotherExceptionHandler();
+
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                }
+
+                app.UseMvcWithDefaultRoute();
+                app.UseSwagger();
+
+                if (env.IsDevelopment())
+                {
+                    app.UseSwaggerUi();
+                }
             }
-
-            app.UseMvcWithDefaultRoute();
-            app.UseSwagger();
-
-            if (env.IsDevelopment())
+            catch (Exception e)
             {
-                app.UseSwaggerUi();
+                Bb.Publish(e.ToBbEvent());
+                throw;
             }
         }
     }
