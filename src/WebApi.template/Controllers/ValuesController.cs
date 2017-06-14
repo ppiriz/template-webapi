@@ -129,13 +129,22 @@ namespace WebApi.template.Controllers
         }
     }
 
+    /// <summary>
+    /// Basic dependency demo class.
+    /// </summary>
     public class BasicDependency
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="BasicDependency"/>
+        /// </summary>
         public BasicDependency()
         {
             ApplicationName = "webApi.template";
         }
 
+        /// <summary>
+        /// Gets a demo <see cref="string"/> property.
+        /// </summary>
         public virtual string ApplicationName { get; }
     }
 }
