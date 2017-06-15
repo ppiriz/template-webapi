@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Web.Http.Description;
+using DevOpsFlex.Core;
+using DevOpsFlex.Telemetry;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.template.Models;
-using System.Web.Http.Description;
 
 namespace WebApi.template.Controllers
 {
-    using DevOpsFlex.Core;
-    using DevOpsFlex.Telemetry;
-
     /// <summary>
     /// Demo values controller, based on the values controller in the default VS template.
     /// </summary>
@@ -40,7 +39,6 @@ namespace WebApi.template.Controllers
 #endif
         }
 
-
         /// <summary>
         /// returns a collection of values
         /// </summary>
@@ -64,7 +62,6 @@ namespace WebApi.template.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound, Type = typeof(void))]
         public IActionResult Get(int id)
         {
-            //return "test";
             if (id < ExistingRecordsRange)
             {
                 return Ok($"{_basicDependency.ApplicationName} - value{id}");
@@ -161,7 +158,7 @@ namespace WebApi.template.Controllers
         /// <summary>
         /// Initializes a new instance of <see cref="ValueAddedEvent"/>.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">The Id of the value added.</param>
         public ValueAddedEvent(int id)
         {
             Id = id;
