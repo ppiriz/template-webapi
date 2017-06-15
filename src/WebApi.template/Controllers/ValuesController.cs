@@ -151,7 +151,7 @@ namespace WebApi.template.Controllers
     }
 
     /// <summary>
-    /// Telemetry event for PUTs on the <see cref="ValuesController"/>.
+    /// Telemetry demo event for PUTs on the <see cref="ValuesController"/>.
     /// </summary>
     public class ValueAddedEvent : BbTelemetryEvent
     {
