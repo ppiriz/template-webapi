@@ -7,6 +7,9 @@ using System.Web.Http.Description;
 
 namespace WebApi.template.Controllers
 {
+    using DevOpsFlex.Core;
+    using DevOpsFlex.Telemetry;
+
     /// <summary>
     /// Demo values controller, based on the values controller in the default VS template.
     /// </summary>
@@ -20,17 +23,20 @@ namespace WebApi.template.Controllers
         private const int RestrictedRecordsRange = 10;
 
         private readonly BasicDependency _basicDependency;
+        private readonly IBigBrother _bb;
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="basicDependency"></param>
-        public ValuesController(BasicDependency basicDependency)
+        /// <param name="bb"></param>
+        public ValuesController(BasicDependency basicDependency, IBigBrother bb)
         {
             _basicDependency = basicDependency;
+            _bb = bb;
 #if DEBUG
             // Don't perform these checks on Release code, as these are only development time errors
             if (basicDependency == null) throw new ArgumentNullException(nameof(basicDependency));
+            if (bb == null) throw new ArgumentNullException(nameof(bb));
 #endif
         }
 
@@ -81,6 +87,8 @@ namespace WebApi.template.Controllers
             if (string.IsNullOrWhiteSpace(value.Name) || string.IsNullOrWhiteSpace(value.Address)) return BadRequest();
             
             var id = new Random().Next(ExistingRecordsRange + 1, 1000);
+            _bb.Publish(new ValueAddedEvent(id));
+
             return Created($"/api/values/{id}", id);
         }
 
@@ -143,5 +151,25 @@ namespace WebApi.template.Controllers
         /// Gets a demo <see cref="string"/> property.
         /// </summary>
         public virtual string ApplicationName { get; }
+    }
+
+    /// <summary>
+    /// Telemetry event for PUTs on the <see cref="ValuesController"/>.
+    /// </summary>
+    public class ValueAddedEvent : BbTelemetryEvent
+    {
+        /// <summary>
+        /// Initializes a new instance of <see cref="ValueAddedEvent"/>.
+        /// </summary>
+        /// <param name="id"></param>
+        public ValueAddedEvent(int id)
+        {
+            Id = id;
+        }
+
+        /// <summary>
+        /// Gets the Id of the value added.
+        /// </summary>
+        public int Id { get; }
     }
 }
