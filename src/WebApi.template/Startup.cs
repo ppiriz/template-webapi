@@ -33,17 +33,7 @@ namespace WebApi.template
         /// <param name="env">Provides information about the web hosting environment an application is running in.</param>
         public Startup(IHostingEnvironment env)
         {
-            var builder = new ConfigurationBuilder().SetBasePath(env.ContentRootPath)
-                                                    .AddJsonFile("appsettings.json");
-
-            if (!env.IsDevelopment())
-            {
-                builder.AddJsonFile($"appsettings.{env.EnvironmentName}.json");
-            }
-
-            builder.AddEnvironmentVariables();
-
-            Configuration = builder.Build();
+            Configuration = Infrastructure.CoreConfiguration.Build();
 
             Configuration.GetSection("Telemetry").Bind(TelemetrySettings);
             Bb = new BigBrother(TelemetrySettings.InstrumentationKey, TelemetrySettings.InternalKey);
