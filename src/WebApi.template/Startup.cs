@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace WebApi.template
 {
@@ -61,18 +63,19 @@ namespace WebApi.template
 
                 services.AddApplicationInsightsTelemetry(TelemetrySettings.InstrumentationKey);
 
-                services.AddSwaggerGen();
-                services.ConfigureSwaggerGen(c =>
+                services.AddSwaggerGen(c =>
                 {
-                    var xmlDocFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "webApi.template.xml");
+                    c.SwaggerDoc("v1.0", new Info { Version = "v1.0", Title = "Shipping API V1.0" });
 
-                    if (File.Exists(xmlDocFile))
+                    var xmlDocFile = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "WebApi.template.xml");
+
+                    if (System.IO.File.Exists(xmlDocFile))
                     {
                         c.IncludeXmlComments(xmlDocFile);
                     }
 
-                    c.DescribeAllEnumsAsStrings(); // if this is not enabled, enum values are treated as int's. probably not what you want
-                    c.SingleApiVersion(new Swashbuckle.Swagger.Model.Info { Title = "webApi.template", Version = "v1" });
+                    c.DescribeAllEnumsAsStrings();
+
                 });
 
                 var builder = new ContainerBuilder();
@@ -110,7 +113,10 @@ namespace WebApi.template
 
                 if (env.IsDevelopment())
                 {
-                    app.UseSwaggerUi();
+                    app.UseSwaggerUI(c =>
+                    {
+                        c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "WebApi.template API V1.0");
+                    });
                 }
             }
             catch (Exception e)

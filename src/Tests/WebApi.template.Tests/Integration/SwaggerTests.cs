@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 // ReSharper disable once CheckNamespace
 public class SwaggerTests
 {
-    private const string TargetUrl = "/swagger/v1/swagger.json";
+    private const string TargetUrl = "/swagger/v1.0/swagger.json";
 
     [Fact, IsIntegration]
     public async Task Verify()
